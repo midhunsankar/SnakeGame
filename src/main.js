@@ -3,7 +3,7 @@ import './style.css'
 
 const { v4: uuidv4 } = require('uuid');
 const matrix = [];
-const r=4, c = 4, len =3;
+const r=6, c = 6, len =3;
 const head = {i:0,j:0}
 const tail = {i:0,j:0}
 
@@ -19,39 +19,99 @@ function Placeholder(Id){
 }
 
 function MoveUP(){
-    if(head.i > 0){        
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.i--;
-        (matrix[head.i][head.j]).ChangeState();
+    if(head.i > 0){       
+        if(VerifyMove("UP")){ 
+            (matrix[tail.i][tail.j]).ChangeState();
+            Transform();
+            head.i--;
+            (matrix[head.i][head.j]).ChangeState();
+        }else{
+            console.log('Illegal Move:UP');
+        }
     }
 }
 
 function MoveDOWN(){
     if(head.i < (r-1)){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.i++;
-        (matrix[head.i][head.j]).ChangeState();
+        if(VerifyMove("DOWN")){ 
+            (matrix[tail.i][tail.j]).ChangeState();
+            Transform();
+            head.i++;
+            (matrix[head.i][head.j]).ChangeState();
+        }else{
+            console.log('Illegal Move:DOWN');
+        }
     }
 }
 
 function MoveLEFT(){
     if(head.j > 0){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.j--;
-        (matrix[head.i][head.j]).ChangeState();
+        if(VerifyMove("LEFT")){ 
+            (matrix[tail.i][tail.j]).ChangeState();
+            Transform();
+            head.j--;
+            (matrix[head.i][head.j]).ChangeState();
+        }else{
+            console.log('Illegal Move:LEFT');
+        }
     }
 }
 
 function MoveRIGHT(){
     if(head.j < (c-1)){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.j++;
-        (matrix[head.i][head.j]).ChangeState();
+        if(VerifyMove("RIGHT")){ 
+            (matrix[tail.i][tail.j]).ChangeState();
+            Transform();
+            head.j++;
+            (matrix[head.i][head.j]).ChangeState();
+        }else{
+            console.log('Illegal Move:RIGHT');
+        }
     }
+}
+
+function VerifyMove(move){
+    if(head.j == tail.j){
+        if(move == "UP"){
+            if(!(head.i < tail.i)){
+                return false;
+            }
+        }else if(move == "DOWN"){
+            if(!(head.i > tail.i)){
+                return false;
+            }
+        }
+    }
+    else if(head.i == tail.i){
+        if(move == "LEFT"){
+            if(!(head.j < tail.j)){
+                return false;
+            }
+        }else if(move == "RIGHT"){
+            if(!(head.j > tail.j)){
+                return false;
+            }
+        }
+    }
+    else{
+        
+        let block = matrix[head.i][tail.j];
+        let prev = (block.currentState.Name === "ON")? { i:head.i, j:tail.j } : { i:tail.i, j:head.j };
+        
+        if(move == "UP" || move =="DOWN"){
+            let next = move == "UP" ? { i:head.i - 1, j:head.j } : { i:head.i + 1, j:head.j };
+            if(next.i == prev.i && next.j == prev.j){
+                return false;
+            }
+        }
+        else if((move == "LEFT" || move =="RIGHT")){
+            let next = move == "LEFT" ? { i:head.i, j:head.j - 1 } : { i:head.i, j:head.j + 1 };
+            if(next.i == prev.i && next.j == prev.j){
+                return false;
+            }
+        }        
+    }
+    return true;
 }
 
 function Transform(){
