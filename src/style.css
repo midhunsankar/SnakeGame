@@ -1,0 +1,19 @@
+body{
+    background: #888;
+    margin: 25px;
+}
+
+.block {
+    height: 50px;
+    width: 50px;
+    border: 2px solid #fff;    
+    display: inline-block;
+}
+
+.block.Off-State{
+    background: #000;
+}
+
+.block.On-State{
+    background: rgb(147, 14, 192);
+}
