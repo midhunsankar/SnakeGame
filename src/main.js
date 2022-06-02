@@ -1,11 +1,12 @@
-import { Block } from "./block";
 import './style.css'
+import { Block } from "./block";
+import {
+    matrix, rows, columns, length, head, 
+    MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT
+    } from './actions';
 
 const { v4: uuidv4 } = require('uuid');
-const matrix = [];
-const r=4, c = 4, len =3;
-const head = {i:0,j:0}
-const tail = {i:0,j:0}
+let cdate;
 
 function Placeholder(Id){
     let placeholder = document.createElement("div");
@@ -18,85 +19,36 @@ function Placeholder(Id){
    return placeholder;
 }
 
-function MoveUP(){
-    if(head.i > 0){        
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.i--;
-        (matrix[head.i][head.j]).ChangeState();
+function StepArtifact(){    
+    if(!cdate){
+        var dt = new Date();
+        let timeout = 10;
+        dt.setSeconds(dt.getSeconds() + timeout);
+        cdate = dt;
     }
-}
-
-function MoveDOWN(){
-    if(head.i < (r-1)){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.i++;
-        (matrix[head.i][head.j]).ChangeState();
+    let now = new Date().getTime();    
+    if ((cdate - now) <= 0) {
+        cdate=null;
+        // Do Call the Artifact function.
+        console.log(now);
     }
-}
-
-function MoveLEFT(){
-    if(head.j > 0){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.j--;
-        (matrix[head.i][head.j]).ChangeState();
-    }
-}
-
-function MoveRIGHT(){
-    if(head.j < (c-1)){
-        (matrix[tail.i][tail.j]).ChangeState();
-        Transform();
-        head.j++;
-        (matrix[head.i][head.j]).ChangeState();
-    }
-}
-
-function Transform(){
-    //Head and Tail in same column.
-    if(head.j == tail.j){
-        if(head.i > tail.i){
-            tail.i++;
-        }
-        else{
-            tail.i--;
-        }
-    }
-    //Head and Tail in same row.
-    else if(head.i == tail.i){
-        if(head.j > tail.j){
-            tail.j++;
-        }
-        else{
-            tail.j--;
-        }
-    }
-    //Head and Tail in diffrent row and column.
-    else{
-        let block = matrix[head.i][tail.j];
-        if(block.currentState.Name === "ON"){
-            tail.i = head.i;
-        }else{
-            tail.j = head.j;
-        }
-    }
+    window.requestAnimationFrame(StepArtifact);
 }
 
 function Main(){   
-    for(let i = 0; i < r; i++){
+    let rootPlaceholder = document.getElementById("rootPlaceholder");
+    for(let i = 0; i < rows; i++){
         let col = [];
         let placeholder = Placeholder(uuidv4());
-        document.body.appendChild(placeholder);
-        for(let j = 0; j < c; j++){
+        rootPlaceholder.appendChild(placeholder);
+        for(let j = 0; j < columns; j++){
             let block =  new Block(uuidv4(), placeholder);
             col[j] = block;
         }
         matrix[i] = col;        
     }
     
-    for (let j = 0; j < len; j++) {
+    for (let j = 0; j < length; j++) {
         //Set initial block ON
         head.j = j;
         (matrix[head.i][head.j]).ChangeState();
@@ -116,3 +68,4 @@ function Main(){
 }
 
 Main();
+window.requestAnimationFrame(StepArtifact);
