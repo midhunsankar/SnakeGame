@@ -1,8 +1,8 @@
 import './style.css'
 import { Block } from "./block";
 import {
-    matrix, rows, columns, length, head, artifact,
-    MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT
+    matrix, rows, columns, length, head, artifact, gameover,direction, captured,
+    MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT, 
     } from './actions';
 
 const { v4: uuidv4 } = require('uuid');
@@ -15,6 +15,7 @@ function Placeholder(Id){
     placeholder.id = 'placeholder-' + Id;
 
     //Add your content to the DIV
+    placeholder.classList.add("row");
     placeholder.classList.add("placeholder");
    return placeholder;
 }
@@ -22,29 +23,49 @@ function Placeholder(Id){
 function StepArtifact(){    
     if(!cdate){
         var dt = new Date();
-        let timeout = 5;
+        let timeout = 3;
         dt.setSeconds(dt.getSeconds() + timeout);
         cdate = dt;
     }
-    let now = new Date().getTime();    
+    let now = new Date().getTime();
+    
     if ((cdate - now) <= 0) {
         cdate=null;
         // Do Call the Artifact function.
         if(artifact.i !== null){
-            if(!(matrix[artifact.i][artifact.j]).CheckArtifact()){
-                /* artifact has been claimed.*/
-            }
-            else{
-                /* Not Claimed toggle it.*/
+            if((matrix[artifact.i][artifact.j]).CheckArtifact()){
+                /* artifact has not claimed.*/
                 (matrix[artifact.i][artifact.j]).UpdateArtifact();
             }
-            //(matrix[artifact.i][artifact.j]).UpdateArtifact(); 
         }
             artifact.i= Math.floor(Math.random() * (rows-1));
             artifact.j= Math.floor(Math.random() * (columns-1));                            
             (matrix[artifact.i][artifact.j]).UpdateArtifact();             
     }
-    window.requestAnimationFrame(StepArtifact);
+    if(!gameover){
+        window.requestAnimationFrame(StepArtifact);
+    }
+}
+
+function UpdateStats(){
+    if(!gameover){
+        document.getElementById("catchTimer").innerText = new Date().toLocaleTimeString()
+        document.getElementById("catchCount").innerText = captured.toString();
+        window.requestAnimationFrame(UpdateStats);
+    }
+    else{
+        document.getElementById("catchTimer").innerText = "**GAME OVER**"
+    }
+}
+
+function AutoMove(){
+    switch(direction){
+        case "UP": MoveUP(); break;
+        case "DOWN": MoveDOWN(); break;
+        case "RIGHT": MoveRIGHT(); break;
+        case "LEFT": MoveLEFT(); break;
+        default: break;
+    }
 }
 
 function Main(){   
@@ -74,10 +95,23 @@ function Main(){
             case `ArrowLeft`: MoveLEFT(); break;
             default: break;
         }
-        //console.log(head);
-        //console.log(tail);
     });
+
+    document.getElementById("btnUP").addEventListener('click', (e) => { MoveUP(); });
+    document.getElementById("btnDOWN").addEventListener('click', (e) => { MoveDOWN(); });
+    document.getElementById("btnLEFT").addEventListener('click', (e) => { MoveLEFT(); });
+    document.getElementById("btnRIGHT").addEventListener('click', (e) => { MoveRIGHT(); });
+
     window.requestAnimationFrame(StepArtifact);
+    let autoInterval = setInterval(()=>{
+        if(!gameover){
+            AutoMove(); 
+        }
+       else{
+           clearInterval(autoInterval);
+       }
+    }, 500);
+    window.requestAnimationFrame(UpdateStats);
 }
 
 Main();

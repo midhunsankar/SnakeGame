@@ -3,11 +3,14 @@ body{
     margin: 25px;
 }
 
+#rootPlaceholder{
+    max-width: 24em;
+}
+
 .block {
-    height: 50px;
-    width: 50px;
+    min-height: 3em;
+    min-width: 3em;
     border: 2px solid #fff;    
-    display: inline-block;
 }
 
 .block.Off-State{

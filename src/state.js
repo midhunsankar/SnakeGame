@@ -56,4 +56,4 @@ class OffState extends State{
     }
 }
 
-export {OnState, OffState}
+export {State, OnState, OffState}

@@ -31,6 +31,7 @@ class Block {
         blockelement.id = 'block-' + this.Id;
 
         //Add your content to the DIV
+        blockelement.classList.add("col");
         blockelement.classList.add("block");
 
         return blockelement;
