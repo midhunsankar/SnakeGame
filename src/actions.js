@@ -2,57 +2,84 @@ const matrix = [];
 const rows = 8, columns = 8, length =3;
 const head = {i:0,j:0}
 const tail = {i:0,j:0}
+const artifact = {i:null,j:null}
+let gameover = false, captured = 0;
+let direction = "RIGHT";
 
 function MoveUP(){
-    if(head.i > 0){       
+    if(head.i > 0 && !gameover){       
         if(VerifyMove("UP")){ 
             (matrix[tail.i][tail.j]).ChangeState();
             Transform();
             head.i--;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
-            console.log('Illegal Move:UP');
+            //Illegal Move:UP
+            gameover = true;
         }
+    }else{
+        //Illegal Move:UP
+        gameover = true;
     }
+    direction = "UP";
 }
 
 function MoveDOWN(){
-    if(head.i < (rows-1)){
+    if(head.i < (rows-1) && !gameover){
         if(VerifyMove("DOWN")){ 
             (matrix[tail.i][tail.j]).ChangeState();
             Transform();
             head.i++;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
-            console.log('Illegal Move:DOWN');
+            //Illegal Move:DOWN
+            gameover = true;
         }
+    }else{
+        //Illegal Move:DOWN
+        gameover = true;
     }
+    direction = "DOWN";
 }
 
 function MoveLEFT(){
-    if(head.j > 0){
+    if(head.j > 0  && !gameover){
         if(VerifyMove("LEFT")){ 
             (matrix[tail.i][tail.j]).ChangeState();
             Transform();
             head.j--;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
-            console.log('Illegal Move:LEFT');
+            //Illegal Move:LEFT
+            gameover = true;
         }
+    }else{
+        //Illegal Move:LEFT
+        gameover = true;
     }
+    direction = "LEFT";
 }
 
 function MoveRIGHT(){
-    if(head.j < (columns-1)){
+    if(head.j < (columns-1) && !gameover){
         if(VerifyMove("RIGHT")){ 
             (matrix[tail.i][tail.j]).ChangeState();
             Transform();
             head.j++;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
-            console.log('Illegal Move:RIGHT');
+            //Illegal Move:RIGHT
+            gameover = true;
         }
+    }else{
+        //Illegal Move:RIGHT
+        gameover = true;
     }
+    direction = "RIGHT";
 }
 
 function VerifyMove(move){
@@ -129,7 +156,17 @@ function Transform(){
     }
 }
 
+function ClaimArtifact(){
+    if(head.i === artifact.i && head.j === artifact.j){
+        /* Artifact Captured. */
+        (matrix[artifact.i][artifact.j]).UpdateArtifact();
+        artifact.i = null;
+        artifact.j = null;
+        captured++;
+    }
+}
+
 export {
-matrix, rows, columns, length, head, tail,
+matrix, rows, columns, length, head, tail, artifact, gameover, direction, captured,
 MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT
 }

@@ -4,33 +4,46 @@ class Block {
     Id;
     currentState = null;    
     placeholder = null;
+    artifact = false;
+    element = null;
     constructor(Id, placeholder){    
         this.Id = Id;
         this.placeholder = placeholder;
-        this.CreateBlock();
-        this.currentState = new OffState(this.Id);
+        let element = this.CreateBlock();
+        this.placeholder.appendChild(element);
+        this.element = element;
+        this.currentState = new OffState(this.Id, this.element);
     }
 
     ChangeState(){
         if(this.currentState instanceof OffState){
-            this.currentState = new OnState(this.Id);
+            this.currentState = new OnState(this.Id, this.element);
         }else{
-            this.currentState = new OffState(this.Id);
+            this.currentState = new OffState(this.Id, this.element);
         }
         this.currentState.toggleState();
     }
 
     CreateBlock(){
-        var block = document.createElement("div");
+        let blockelement = document.createElement("div");
 
         //Set its unique ID.
-        block.id = 'block-' + this.Id;
+        blockelement.id = 'block-' + this.Id;
 
         //Add your content to the DIV
-        block.classList.add("block");
+        blockelement.classList.add("col");
+        blockelement.classList.add("block");
 
-        //Finally, append the element to the HTML body
-        this.placeholder.appendChild(block);
+        return blockelement;
+    }
+
+    CheckArtifact(){
+        return this.artifact;
+    }
+
+    UpdateArtifact(){
+        this.artifact = !this.artifact;
+        this.element.classList.toggle('artifact');
     }
 }
 
