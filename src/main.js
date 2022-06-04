@@ -1,7 +1,7 @@
 import './style.css'
 import { Block } from "./block";
 import {
-    matrix, rows, columns, length, head, 
+    matrix, rows, columns, length, head, artifact,
     MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT
     } from './actions';
 
@@ -22,7 +22,7 @@ function Placeholder(Id){
 function StepArtifact(){    
     if(!cdate){
         var dt = new Date();
-        let timeout = 10;
+        let timeout = 5;
         dt.setSeconds(dt.getSeconds() + timeout);
         cdate = dt;
     }
@@ -30,7 +30,19 @@ function StepArtifact(){
     if ((cdate - now) <= 0) {
         cdate=null;
         // Do Call the Artifact function.
-        console.log(now);
+        if(artifact.i !== null){
+            if(!(matrix[artifact.i][artifact.j]).CheckArtifact()){
+                /* artifact has been claimed.*/
+            }
+            else{
+                /* Not Claimed toggle it.*/
+                (matrix[artifact.i][artifact.j]).UpdateArtifact();
+            }
+            //(matrix[artifact.i][artifact.j]).UpdateArtifact(); 
+        }
+            artifact.i= Math.floor(Math.random() * (rows-1));
+            artifact.j= Math.floor(Math.random() * (columns-1));                            
+            (matrix[artifact.i][artifact.j]).UpdateArtifact();             
     }
     window.requestAnimationFrame(StepArtifact);
 }
@@ -65,7 +77,7 @@ function Main(){
         //console.log(head);
         //console.log(tail);
     });
+    window.requestAnimationFrame(StepArtifact);
 }
 
 Main();
-window.requestAnimationFrame(StepArtifact);

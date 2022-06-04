@@ -2,6 +2,7 @@ const matrix = [];
 const rows = 8, columns = 8, length =3;
 const head = {i:0,j:0}
 const tail = {i:0,j:0}
+const artifact = {i:null,j:null}
 
 function MoveUP(){
     if(head.i > 0){       
@@ -10,6 +11,7 @@ function MoveUP(){
             Transform();
             head.i--;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
             console.log('Illegal Move:UP');
         }
@@ -23,6 +25,7 @@ function MoveDOWN(){
             Transform();
             head.i++;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
             console.log('Illegal Move:DOWN');
         }
@@ -36,6 +39,7 @@ function MoveLEFT(){
             Transform();
             head.j--;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
             console.log('Illegal Move:LEFT');
         }
@@ -49,6 +53,7 @@ function MoveRIGHT(){
             Transform();
             head.j++;
             (matrix[head.i][head.j]).ChangeState();
+            ClaimArtifact();
         }else{
             console.log('Illegal Move:RIGHT');
         }
@@ -129,7 +134,16 @@ function Transform(){
     }
 }
 
+function ClaimArtifact(){
+    if(head.i === artifact.i && head.j === artifact.j){
+        (matrix[artifact.i][artifact.j]).UpdateArtifact();
+        artifact.i = null;
+        artifact.j = null;
+        console.log('Artifact Captured.')
+    }
+}
+
 export {
-matrix, rows, columns, length, head, tail,
+matrix, rows, columns, length, head, tail, artifact,
 MoveUP, MoveDOWN, MoveLEFT, MoveRIGHT
 }

@@ -1,6 +1,7 @@
 class State {
     Name;
     BlockId;
+    BlockElement;
     toggleState(){
         console.log('Sub classes have to Override this method!!')
         return null;
@@ -8,51 +9,49 @@ class State {
 }
 
 class OnState extends State{
-    constructor(blockid){
+    constructor(blockid, blockelement){
         super();
         this.Name="ON";
         this.BlockId=blockid;
+        this.BlockElement = blockelement;
         this.initialState();
     }
     initialState(){
-        let blockelement = document.getElementById('block-'+this.BlockId);
-        if(!blockelement.classList.contains('On-State')){
-            blockelement.classList.add('On-State');
+        if(!this.BlockElement.classList.contains('On-State')){
+            this.BlockElement.classList.add('On-State');
         }
     }
     toggleState(){
-        let blockelement = document.getElementById('block-'+this.BlockId);
-        if(blockelement.classList.contains('Off-State')){
-            blockelement.classList.remove('Off-State');
+        if(this.BlockElement.classList.contains('Off-State')){
+            this.BlockElement.classList.remove('Off-State');
         }
         
-        if(!blockelement.classList.contains('On-State')){
-            blockelement.classList.add('On-State');
+        if(!this.BlockElement.classList.contains('On-State')){
+            this.BlockElement.classList.add('On-State');
         }
     }
 }
 
-class OffState extends State{
-    constructor(blockid){
+class OffState extends State{ 
+    constructor(blockid, blockelement){
         super();
         this.Name="OFF";
         this.BlockId=blockid;
+        this.BlockElement = blockelement;
         this.initialState();
     }
     initialState(){
-        let blockelement = document.getElementById('block-'+this.BlockId);
-        if(!blockelement.classList.contains('Off-State')){
-            blockelement.classList.add('Off-State');
+        if(!this.BlockElement.classList.contains('Off-State')){
+            this.BlockElement.classList.add('Off-State');
         }
     }
     toggleState(){
-        let blockelement = document.getElementById('block-'+this.BlockId);
-        if(blockelement.classList.contains('On-State')){
-            blockelement.classList.remove('On-State');
+        if(this.BlockElement.classList.contains('On-State')){
+            this.BlockElement.classList.remove('On-State');
         }
         
-        if(!blockelement.classList.contains('Off-State')){
-            blockelement.classList.add('Off-State');
+        if(!this.BlockElement.classList.contains('Off-State')){
+            this.BlockElement.classList.add('Off-State');
         }
     }
 }

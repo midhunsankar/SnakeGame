@@ -17,3 +17,7 @@ body{
 .block.On-State{
     background: rgb(147, 14, 192);
 }
+
+.artifact{
+    background: rgb(5, 243, 104) !important;
+}
