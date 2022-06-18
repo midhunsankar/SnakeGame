@@ -4,7 +4,7 @@ body{
 }
 
 #rootPlaceholder{
-    max-width: 24em;
+    max-width: 40em;
 }
 #catchTimer{
     color: #fff;
@@ -14,8 +14,8 @@ body{
 }
 
 .block {
-    min-height: 3em;
-    min-width: 3em;
+    min-height: 5em;
+    min-width: 5em;
     border: 2px solid #fff;    
 }
 
