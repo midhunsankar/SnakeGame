@@ -101,7 +101,9 @@ function Main(){
     document.getElementById("btnDOWN").addEventListener('click', (e) => { MoveDOWN(); });
     document.getElementById("btnLEFT").addEventListener('click', (e) => { MoveLEFT(); });
     document.getElementById("btnRIGHT").addEventListener('click', (e) => { MoveRIGHT(); });
-    document.getElementById("btnSTART").addEventListener('click', (e) => {         
+    document.getElementById("btnSTART").addEventListener('click', (e) => {    
+       
+        let lvl = document.getElementById("levelSelect").value;
         let autoInterval = setInterval(()=>{
             if(!gameover){
                 AutoMove(); 
@@ -109,7 +111,7 @@ function Main(){
            else{
                clearInterval(autoInterval);
            }
-        }, 500);
+        },(6 - parseInt(lvl)) * 100);
         e.target.disabled = true;
         // Remove focus from star button.
         if (document.activeElement) {

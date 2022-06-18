@@ -6,6 +6,12 @@ body{
 #rootPlaceholder{
     max-width: 24em;
 }
+#catchTimer{
+    color: #fff;
+}
+#catchCount{
+    color: yellow;
+}
 
 .block {
     min-height: 3em;
