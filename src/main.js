@@ -101,16 +101,22 @@ function Main(){
     document.getElementById("btnDOWN").addEventListener('click', (e) => { MoveDOWN(); });
     document.getElementById("btnLEFT").addEventListener('click', (e) => { MoveLEFT(); });
     document.getElementById("btnRIGHT").addEventListener('click', (e) => { MoveRIGHT(); });
-
-    window.requestAnimationFrame(StepArtifact);
-    let autoInterval = setInterval(()=>{
-        if(!gameover){
-            AutoMove(); 
+    document.getElementById("btnSTART").addEventListener('click', (e) => {         
+        let autoInterval = setInterval(()=>{
+            if(!gameover){
+                AutoMove(); 
+            }
+           else{
+               clearInterval(autoInterval);
+           }
+        }, 500);
+        e.target.disabled = true;
+        // Remove focus from star button.
+        if (document.activeElement) {
+            document.activeElement.blur();
         }
-       else{
-           clearInterval(autoInterval);
-       }
-    }, 500);
+    });
+    window.requestAnimationFrame(StepArtifact);
     window.requestAnimationFrame(UpdateStats);
 }
 
